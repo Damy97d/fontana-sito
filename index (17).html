@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Concessionario Fontana | RP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --bg-sidebar: #111111;
+      --bg-card: #161616;
+      --bg-card-hover: #1c1c1c;
+      --text: #f0f0f0;
+      --text-muted: #888888;
+      --border: rgba(255, 255, 255, 0.1);
+      --white: #ffffff;
+      --halo: 0 0 18px rgba(255, 255, 255, 0.35), 0 0 6px rgba(255, 255, 255, 0.2);
+      --halo-strong: 0 0 28px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ===== TOP BAR ===== */
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 36px;
+      background: #1a1a1a;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      font-size: 13px;
+      font-weight: 500;
+      z-index: 1000;
+      color: #ccc;
+    }
+
+    .top-bar .left, .top-bar .right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ===== LAYOUT ===== */
+    .layout {
+      display: flex;
+      margin-top: 36px;
+      min-height: calc(100vh - 36px);
+    }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      width: 260px;
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 36px;
+      left: 0;
+      bottom: 0;
+      z-index: 900;
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar-logo {
+      padding: 28px 20px 20px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-logo img {
+      max-width: 180px;
+      height: auto;
+      filter: grayscale(100%) brightness(1.1) drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+      transition: filter 0.3s ease, box-shadow 0.3s ease;
+      border-radius: 8px;
+    }
+
+    .sidebar-logo img:hover {
+      filter: grayscale(0%) brightness(1.15);
+      box-shadow: var(--halo);
+    }
+
+    .sidebar-logo .brand {
+      margin-top: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      color: var(--white);
+      text-transform: uppercase;
+    }
+
+    .nav-menu {
+      flex: 1;
+      padding: 24px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 15px;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+
+    .nav-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--white);
+      box-shadow: var(--halo);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .nav-item.active {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--white);
+      border-color: rgba(255, 255, 255, 0.2);
+      box-shadow: var(--halo);
+    }
+
+    .nav-item svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .sidebar-footer {
+      padding: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn-area {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 13px 16px;
+      background: #fff;
+      color: #000;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-decoration: none;
+    }
+
+    .btn-area:hover {
+      background: #f0f0f0;
+      box-shadow: var(--halo-strong);
+      transform: translateY(-1px);
+    }
+
+    /* ===== MAIN CONTENT ===== */
+    .main {
+      flex: 1;
+      margin-left: 260px;
+      min-height: calc(100vh - 36px);
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      position: relative;
+      height: calc(100vh - 36px);
+      min-height: 620px;
+      background: url('concessionario.png') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, 
+        rgba(0, 0, 0, 0.92) 0%, 
+        rgba(0, 0, 0, 0.78) 45%, 
+        rgba(0, 0, 0, 0.5) 100%);
+      /* desaturate the bg a bit */
+      backdrop-filter: grayscale(40%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 60px;
+      max-width: 680px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border);
+      color: var(--white);
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 22px;
+      transition: all 0.25s ease;
+    }
+
+    .badge:hover {
+      box-shadow: var(--halo);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .badge svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 4.5vw, 3.6rem);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 18px;
+      letter-spacing: -0.5px;
+      color: var(--white);
+    }
+
+    .hero h1 span {
+      color: #bbb;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 32px;
+      max-width: 520px;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 26px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-decoration: none;
+      border: none;
+    }
+
+    .btn-primary {
+      background: #fff;
+      color: #000;
+    }
+
+    .btn-primary:hover {
+      background: #f5f5f5;
+      box-shadow: var(--halo-strong);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1.5px solid rgba(255, 255, 255, 0.35);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.6);
+      box-shadow: var(--halo);
+    }
+
+    /* ===== SECTIONS ===== */
+    .section {
+      display: none;
+      padding: 50px 50px 70px;
+      animation: fadeIn 0.35s ease;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-header {
+      margin-bottom: 36px;
+    }
+
+    .section-header h2 {
+      font-size: 1.9rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--white);
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    /* Cards grid */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 22px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: all 0.25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 255, 255, 0.25);
+      box-shadow: var(--halo);
+      background: var(--bg-card-hover);
+    }
+
+    .card-img {
+      height: 160px;
+      background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    .card-body h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--white);
+    }
+
+    .card-body .price {
+      color: #ccc;
+      font-weight: 700;
+      font-size: 1.15rem;
+      margin-bottom: 10px;
+    }
+
+    .card-body p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    .card-body .btn {
+      width: 100%;
+      justify-content: center;
+      padding: 11px;
+      font-size: 14px;
+    }
+
+    /* Form */
+    .form-box {
+      max-width: 560px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      transition: box-shadow 0.25s ease;
+    }
+
+    .form-box:hover {
+      box-shadow: var(--halo);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 7px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 14px;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      color: var(--text);
+      font-size: 15px;
+      font-family: inherit;
+      transition: all 0.25s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: rgba(255, 255, 255, 0.4);
+      box-shadow: var(--halo);
+    }
+
+    .form-group input:hover,
+    .form-group select:hover,
+    .form-group textarea:hover {
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .form-group textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    /* Area Personale */
+    .systems-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .system-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .system-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow: var(--halo);
+      background: var(--bg-card-hover);
+    }
+
+    .system-card .icon {
+      width: 52px;
+      height: 52px;
+      margin: 0 auto 16px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s ease;
+    }
+
+    .system-card:hover .icon {
+      background: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+    }
+
+    .system-card .icon svg {
+      width: 26px;
+      height: 26px;
+      color: var(--white);
+    }
+
+    .system-card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--white);
+    }
+
+    .system-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Mobile toggle */
+    .menu-toggle {
+      display: none;
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: #fff;
+      border: none;
+      color: #000;
+      z-index: 1100;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s ease;
+    }
+
+    .menu-toggle:hover {
+      box-shadow: var(--halo-strong);
+    }
+
+    .menu-toggle svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .main {
+        margin-left: 0;
+      }
+
+      .hero-content {
+        padding: 0 28px;
+      }
+
+      .section {
+        padding: 36px 24px 50px;
+      }
+
+      .menu-toggle {
+        display: flex;
+      }
+
+      .top-bar {
+        font-size: 12px;
+        padding: 0 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="left">
+      <span>📞 Assistenza: 24/7</span>
+      <span style="opacity:0.5">|</span>
+      <span>📍 Los Santos • RP</span>
+    </div>
+    <div class="right">
+      <span>Sito By Damy_97 • #Stark damy_97</span>
+    </div>
+  </div>
+
+  <div class="layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <img src="logo.jpg" alt="Concessionario Fontana">
+        <div class="brand">Concessionario Fontana</div>
+      </div>
+
+      <nav class="nav-menu">
+        <a class="nav-item active" data-section="home" onclick="showSection('home')">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
+          Home
+        </a>
+        <a class="nav-item" data-section="parco" onclick="showSection('parco')">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 17h14v2H5v-2zm1.5-4.5L8 9h8l1.5 3.5H6.5z"/><circle cx="7.5" cy="15.5" r="1.5"/><circle cx="16.5" cy="15.5" r="1.5"/><path d="M3 13h18v2H3v-2z"/></svg>
+          Parco Veicoli
+        </a>
+        <a class="nav-item" data-section="prenota" onclick="showSection('prenota')">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>
+          Prenota Appuntamento
+        </a>
+        <a class="nav-item" data-section="area" onclick="showSection('area')">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Area Personale
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="#" class="btn-area" onclick="showSection('area'); return false;">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          Area Personale
+        </a>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <!-- HOME -->
+      <section id="home" class="section active" style="padding:0;">
+        <div class="hero">
+          <div class="hero-content">
+            <div class="badge">
+              <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h2v-6h-2v6zm0-8h2V7h-2v2z"/></svg>
+              Qualità &amp; Affidabilità
+            </div>
+            <h1>Trova la tua<br><span>prossima auto</span></h1>
+            <p>Il Concessionario Fontana ti offre i migliori veicoli di Los Santos. Visita il nostro parco auto, prenota un appuntamento o gestisci tutto dalla tua area personale.</p>
+            <div class="hero-btns">
+              <button class="btn btn-primary" onclick="showSection('parco')">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 17h14v2H5v-2zm1.5-4.5L8 9h8l1.5 3.5H6.5z"/><circle cx="7.5" cy="15.5" r="1.5"/><circle cx="16.5" cy="15.5" r="1.5"/></svg>
+                Vedi Parco Veicoli
+              </button>
+              <button class="btn btn-outline" onclick="showSection('prenota')">
+                Prenota Appuntamento
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PARCO VEICOLI -->
+      <section id="parco" class="section">
+        <div class="section-header">
+          <h2>Parco Veicoli</h2>
+          <p>Scopri i veicoli disponibili nel nostro concessionario. Clicca su un modello per maggiori dettagli.</p>
+        </div>
+        <div class="cards">
+          <div class="card">
+            <div class="card-img">🚗 Sedan Premium</div>
+            <div class="card-body">
+              <h3>Schafter V12</h3>
+              <div class="price">$ 85.000</div>
+              <p>Berlina di lusso, motore potente e interni premium. Perfetta per chi cerca eleganza.</p>
+              <button class="btn btn-primary">Dettagli</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-img">🏎️ Sportiva</div>
+            <div class="card-body">
+              <h3>Comet S2</h3>
+              <div class="price">$ 145.000</div>
+              <p>Sportiva ad alte prestazioni. Accelerazione fulminea e handling da pista.</p>
+              <button class="btn btn-primary">Dettagli</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-img">🚙 SUV</div>
+            <div class="card-body">
+              <h3>Baller LE</h3>
+              <div class="price">$ 98.000</div>
+              <p>SUV di lusso spazioso e confortevole. Ideale per la famiglia o per il business.</p>
+              <button class="btn btn-primary">Dettagli</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-img">🛻 Pickup</div>
+            <div class="card-body">
+              <h3>Sandking XL</h3>
+              <div class="price">$ 62.000</div>
+              <p>Pick-up robusto e versatile. Perfetto per lavoro e avventure off-road.</p>
+              <button class="btn btn-primary">Dettagli</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-img">🏍️ Moto</div>
+            <div class="card-body">
+              <h3>Bati 801</h3>
+              <div class="price">$ 28.000</div>
+              <p>Moto sportiva leggera e reattiva. Libertà totale sulla strada.</p>
+              <button class="btn btn-primary">Dettagli</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-img">🚐 Van</div>
+            <div class="card-body">
+              <h3>Rumpo Custom</h3>
+              <div class="price">$ 45.000</div>
+              <p>Furgone personalizzabile. Ideale per attività commerciali e trasporti.</p>
+              <button class="btn btn-primary">Dettagli</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRENOTA APPUNTAMENTO -->
+      <section id="prenota" class="section">
+        <div class="section-header">
+          <h2>Prenota un Appuntamento</h2>
+          <p>Compila il form per fissare un incontro con i nostri consulenti. Ti contatteremo al più presto.</p>
+        </div>
+        <div class="form-box">
+          <form onsubmit="event.preventDefault(); alert('Richiesta inviata! Ti contatteremo a breve.');">
+            <div class="form-group">
+              <label>Nome completo</label>
+              <input type="text" placeholder="Il tuo nome" required>
+            </div>
+            <div class="form-group">
+              <label>Telefono / Discord</label>
+              <input type="text" placeholder="Es. Damy_97 o numero" required>
+            </div>
+            <div class="form-group">
+              <label>Tipo di appuntamento</label>
+              <select required>
+                <option value="">Seleziona...</option>
+                <option>Visita al parco veicoli</option>
+                <option>Prova su strada</option>
+                <option>Acquisto veicolo</option>
+                <option>Vendita / Permuta</option>
+                <option>Assistenza post-vendita</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Data preferita</label>
+              <input type="date" required>
+            </div>
+            <div class="form-group">
+              <label>Note aggiuntive</label>
+              <textarea placeholder="Raccontaci cosa ti interessa..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">
+              Invia Richiesta
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- AREA PERSONALE -->
+      <section id="area" class="section">
+        <div class="section-header">
+          <h2>Area Personale</h2>
+          <p>Accedi a tutti i sistemi del concessionario. Gestisci veicoli, documenti e servizi.</p>
+        </div>
+        <div class="systems-grid">
+          <div class="system-card" onclick="alert('Sistema: Gestione Veicoli')">
+            <div class="icon">
+              <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M5 17h14v2H5v-2zm1.5-4.5L8 9h8l1.5 3.5H6.5z"/><circle cx="7.5" cy="15.5" r="1.5"/><circle cx="16.5" cy="15.5" r="1.5"/></svg>
+            </div>
+            <h3>I miei Veicoli</h3>
+            <p>Visualizza e gestisci i tuoi mezzi</p>
+          </div>
+          <div class="system-card" onclick="alert('Sistema: Documenti')">
+            <div class="icon">
+              <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+            </div>
+            <h3>Documenti</h3>
+            <p>Contratti, fatture e libretti</p>
+          </div>
+          <div class="system-card" onclick="alert('Sistema: Pagamenti')">
+            <div class="icon">
+              <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+            </div>
+            <h3>Pagamenti</h3>
+            <p>Rate, bollette e storico</p>
+          </div>
+          <div class="system-card" onclick="alert('Sistema: Assistenza')">
+            <div class="icon">
+              <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+            </div>
+            <h3>Assistenza</h3>
+            <p>Richieste di manutenzione</p>
+          </div>
+          <div class="system-card" onclick="alert('Sistema: Notifiche')">
+            <div class="icon">
+              <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+            </div>
+            <h3>Notifiche</h3>
+            <p>Avvisi e aggiornamenti</p>
+          </div>
+          <div class="system-card" onclick="alert('Sistema: Impostazioni')">
+            <div class="icon">
+              <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+            </div>
+            <h3>Impostazioni</h3>
+            <p>Profilo e preferenze</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Mobile menu button -->
+  <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">
+    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+  </button>
+
+  <script>
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.toggle('active', item.dataset.section === id);
+      });
+      document.getElementById('sidebar').classList.remove('open');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+    }
+
+    document.addEventListener('click', (e) => {
+      const sidebar = document.getElementById('sidebar');
+      const toggle = document.getElementById('menuToggle');
+      if (window.innerWidth <= 900 && sidebar.classList.contains('open')) {
+        if (!sidebar.contains(e.target) && !toggle.contains(e.target)) {
+          sidebar.classList.remove('open');
+        }
+      }
+    });
+  </script>
+</body>
+</html>
